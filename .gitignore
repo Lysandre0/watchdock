@@ -1,0 +1,71 @@
+# Fichiers et répertoires générés par Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Environnements virtuels Python
+venv/
+env/
+.venv/
+
+# Fichiers de configuration d'environnement
+.env
+
+# Fichiers de configuration IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Fichiers de base de données SQLite
+*.sqlite3
+*.db
+
+# Fichiers générés par l'éditeur
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Exclure le répertoire des fichiers de test
+test/
+
+# Exclure les fichiers de couverture
+.coverage
+*.cover
+nosetests.xml
+coverage.xml
+*.hypothesis/
+
+# Exclure les fichiers temporaires et de build
+build/
+dist/
+*.egg-info/
+*.egg
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# Exclure les fichiers spécifiques à un projet
+config.json
+docker-compose.override.yml
+
+# Exclure les fichiers de configuration générés
+*.pem
+*.crt
+*.key
+
+# Exclure les fichiers sensibles
+*.env
+*.private
+
+# Fichiers de déploiement
+*.zip
+*.tar.gz
+
+# Répertoires de dépendances Node.js (si utilisés)
+node_modules/
