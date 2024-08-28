@@ -11,7 +11,7 @@ def init_db():
         name TEXT,
         image TEXT,
         ip_address TEXT,
-        domain_name TEXT
+        port INTEGER
     )
     ''')
     conn.commit()

@@ -42,17 +42,18 @@ def get_running_containers():
                     if match:
                         ip_address = match.group(1)  # Extrait l'adresse IP
                         port = match.group(2)       # Extrait le port
+                else :
+                    ip_address = "0"
+                    port = 0
 
-                # Crée un nom de domaine en ajoutant .local au nom du conteneur
-                domain_name = f"{container_name}.local"
 
                 # Prépare les données pour l'insertion dans la base de données
-                container_data.append((container_id, container_name, container_image, ip_address, port, domain_name))
+                container_data.append((container_id, container_name, container_image, ip_address, port))
 
             # Insère ou met à jour les informations des conteneurs en cours d'exécution
             cursor.executemany('''
-                INSERT OR REPLACE INTO containers (id, name, image, ip_address, port, domain_name)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT OR REPLACE INTO containers (id, name, image, ip_address, port)
+                VALUES (?, ?, ?, ?, ?)
             ''', container_data)
 
             # Valide les transactions
@@ -73,7 +74,6 @@ def get_running_containers():
             "image": container.image.tags[0] if container.image.tags else 'Unknown',
             "ip_address": ip_address,
             "port": port,
-            "domain_name": f"{container.name}.local"
         }
         for container in containers
     ]
