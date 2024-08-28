@@ -1,0 +1,55 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Couleur de fond sombre pour le mode sombre */
+    color: #e0e0e0; /* Couleur du texte claire pour le mode sombre */
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background: #1e1e1e; /* Fond sombre pour le conteneur */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Ombrage plus sombre */
+}
+
+h1 {
+    text-align: center;
+    color: #ffffff; /* Couleur du texte clair */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #1e1e1e; /* Fond sombre pour la table */
+}
+
+th, td {
+    border: 1px solid #333; /* Bordure plus sombre */
+    padding: 8px;
+    text-align: center;
+    color: #e0e0e0; /* Couleur du texte clair */
+}
+
+th {
+    background-color: #333; /* Couleur de fond sombre pour l'en-tête */
+    color: #ffffff; /* Couleur du texte de l'en-tête clair */
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #4CAF50; /* Couleur verte pour le bouton, reste similaire pour contraste */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #45a049; /* Couleur plus foncée pour l'effet hover */
+}
