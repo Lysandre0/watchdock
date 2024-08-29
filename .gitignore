@@ -4,6 +4,7 @@ __pycache__/
 *.pyo
 *.pyd
 *.db
+.pytest_cache/
 
 # Environnements virtuels Python
 venv/
@@ -69,3 +70,5 @@ docker-compose.override.yml
 
 # Répertoires de dépendances Node.js (si utilisés)
 node_modules/
+
+.github/
