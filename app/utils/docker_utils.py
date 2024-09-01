@@ -12,36 +12,35 @@ def get_running_containers():
             cursor = conn.cursor()
             running_container_ids = [container.id for container in containers]
 
-            if running_container_ids:
-                placeholders = ','.join(['?'] * len(running_container_ids))
-                cursor.execute(f'DELETE FROM containers WHERE id NOT IN ({placeholders})', running_container_ids)
-            else:
-                cursor.execute('DELETE FROM containers')
+            # Mise à jour de la base de données : suppression des conteneurs non actifs
+            placeholders = ','.join(['?'] * len(running_container_ids))
+            cursor.execute(f'DELETE FROM containers WHERE id NOT IN ({placeholders})', running_container_ids) if running_container_ids else cursor.execute('DELETE FROM containers')
 
-            container_data = []
             for container in containers:
                 container_name = container.name
                 container_id = container.id
                 container_image = container.image.tags[0] if container.image.tags else 'Unknown'
 
+                # Récupération des labels pour l'URL de l'UI Web, si présente
                 labels = container.attrs.get('Config', {}).get('Labels', {})
-                web_ui_url = labels.get("net.unraid.docker.webui", None)
+                web_ui_url = labels.get("net.unraid.docker.webui")
 
-                if web_ui_url:
-                    match = re.search(r'//([\d\.]+):(\d+)', web_ui_url)
-                    if match:
-                        ip_address = match.group(1)
-                        port = match.group(2)
-                else:
-                    ip_address = "0"
-                    port = 0
+                # Extraction de l'IP et du port depuis l'URL de l'UI Web si disponible
+                match = re.search(r'//([\d\.]+):(\d+)', web_ui_url) if web_ui_url else None
+                ip_address, port = match.groups() if match else ('localhost', '80')
 
-                container_data.append((container_id, container_name, container_image, ip_address, port))
+                # Récupération des informations réseau si l'URL de l'UI Web n'est pas disponible
+                if not match:
+                    networks = container.attrs.get('NetworkSettings', {}).get('Networks', {})
+                    ip_address = next(iter(networks.values()), {}).get('IPAddress', 'localhost')
+                    ports = container.attrs.get('NetworkSettings', {}).get('Ports', {})
+                    port = next((p[0]['HostPort'] for p in ports.values() if p), '80')
 
-            cursor.executemany('''
-                INSERT OR REPLACE INTO containers (id, name, image, ip_address, port)
-                VALUES (?, ?, ?, ?, ?)
-            ''', container_data)
+                # Mettre à jour la base de données avec les informations du conteneur
+                cursor.execute('''
+                    INSERT OR REPLACE INTO containers (id, name, image, ip_address, port)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (container_id, container_name, container_image, ip_address, port))
 
             conn.commit()
 
@@ -52,13 +51,14 @@ def get_running_containers():
         print(f"Erreur inattendue : {e}")
         return []
 
+    # Retourne les conteneurs avec les informations récupérées
     return [
         {
             "name": container.name,
             "id": container.id,
             "image": container.image.tags[0] if container.image.tags else 'Unknown',
-            "ip_address": ip_address,
-            "port": port,
+            "ip_address": next((network.get('IPAddress', 'localhost') for network in container.attrs.get('NetworkSettings', {}).get('Networks', {}).values()), 'localhost'),
+            "port": next((port[0]['HostPort'] for port in container.attrs.get('NetworkSettings', {}).get('Ports', {}).values() if port), '80')
         }
         for container in containers
     ]
