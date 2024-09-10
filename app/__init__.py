@@ -1,14 +1,18 @@
 from flask import Flask
-from .database import init_db  # Assure-toi que l'importation relative est correcte
+from .utils.db_utils import init_db
+
+# Importation correcte du blueprint
+from .routes.main import main
 
 def create_app():
     app = Flask(__name__)
-
-    # Initialisation de la base de données
-    init_db()  # N'appelle pas avec des arguments si la fonction ne prend pas d'arguments
-
-    # Importation des routes
-    from .routes import main
+    init_db()
+    
+    # Enregistrement du blueprint correctement
     app.register_blueprint(main)
 
     return app
+
+def run_flask():
+    app = create_app()
+    app.run(host="0.0.0.0", port=5000)

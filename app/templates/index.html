@@ -8,25 +8,38 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>WatchDock</h1>
-        <button id="refreshButton">Refresh Containers</button>
-        <table id="containersTable">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>ID</th>
-                    <th>Image</th>
-                    <th>IP Address</th>
-                    <th>Domain Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Les données des conteneurs seront ajoutées ici par JavaScript -->
-            </tbody>
-        </table>
+    <div class="app-container">
+        <header>
+            <h1>WatchDock</h1>
+            <button id="refreshButton" class="btn">Refresh Containers</button>
+        </header>
+        <main>
+            <div class="card">
+                <div class="table-container">
+                    <div id="loading" class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <table id="containersTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>ID</th>
+                                <th>Image</th>
+                                <th>IP Address</th>
+                                <th>Port</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Les données des conteneurs seront ajoutées ici par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
+
 
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
+
 </html>

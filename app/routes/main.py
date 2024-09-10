@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, render_template
-from .docker_utils import get_running_containers
+from ..utils.docker_utils import get_running_containers
 
 main = Blueprint('main', __name__)
 
@@ -15,5 +15,4 @@ def list_containers():
         containers = get_running_containers()
         return jsonify(containers)
     except Exception as e:
-        # Gestion des erreurs pour le cas où `get_running_containers` échoue
         return jsonify({"error": "Une erreur est survenue lors de la récupération des conteneurs."}), 500
